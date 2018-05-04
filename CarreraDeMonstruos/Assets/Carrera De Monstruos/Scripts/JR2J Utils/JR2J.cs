@@ -24,6 +24,7 @@ public class JR2J : MonoBehaviour {
 
     }
 
+    public string IP = "192.168.1.21";
     public int PORT = 80;
     private IPAddress localhost;
 
@@ -46,7 +47,7 @@ public class JR2J : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        localhost = IPAddress.Parse("127.0.0.1");
+        localhost = IPAddress.Parse(IP);
         tcpServer = new TcpListener(localhost, PORT);
 
         // Starts server
@@ -64,7 +65,7 @@ public class JR2J : MonoBehaviour {
 	void Update () {
         try
         {
-            
+            if ()
             // If there are clients in thw connection queue
             if (tcpServer.Pending())
             {
@@ -73,35 +74,38 @@ public class JR2J : MonoBehaviour {
                 // You could also user server.AcceptSocket() here.
                 TcpClient client = tcpServer.AcceptTcpClient();
                 // Blocks until the client gets connected
-                while (!client.Connected) { }
+                // while (!client.Connected) { }
                 Debug.Log("Client connected");
                 tcpClients.Add(client);
                 NetworkStream clientStream = client.GetStream();
                 // Blocks until stream can be readed
-                while (!clientStream.CanRead) { }
+                // while (!clientStream.CanRead) { }
                 streams.Add(clientStream);
             }
 
             // Make sure there are connected client's stream
             if (streams.Count == 0)
             {
+                // Debug.Log("Returning for count");
                 return;
             }
             // Debug.Log("Stream Available");
             // Reads the data from each network stream
             foreach (NetworkStream stream in streams)
             {
-
+                // TCP server frezes unity https://stackoverflow.com/questions/19046251/reading-tcp-data-freezes-unity
                 StringBuilder str = new StringBuilder();
                 int numberOfBytesReaded = 0;
                 // Incoming message may be larger than the buffer size.
                 do
                 {
+                    Debug.Log("Reading str");
                     numberOfBytesReaded = stream.Read(bytes, 0, bytes.Length);
                     str.AppendFormat("{0}", System.Text.Encoding.ASCII.GetString(bytes, 0, numberOfBytesReaded));
-                    
                 }
                 while (stream.DataAvailable);
+
+                Debug.Log("Inifine loop");
                 JR2JMessage msg = new JR2JMessage();
                 // If the separator parameter is null or contains no characters, white-space characters are assumed to be the delimiters.
 
@@ -116,9 +120,6 @@ public class JR2J : MonoBehaviour {
                     onIncommingMessage.Invoke(msg);
                 else
                     Debug.Log("Could not do the conversion :/");
-
-
-                // Debug.Log("Received: " + str.ToString());
             }
         }
         catch (System.Exception e)
@@ -126,8 +127,6 @@ public class JR2J : MonoBehaviour {
             Debug.Log(e.ToString());
             CloseClientsConnections();
         }
-        
-
     }
 
     [ContextMenu("Close all client connections")]
@@ -143,6 +142,7 @@ public class JR2J : MonoBehaviour {
     {
         tcpClients[i].Close();
         tcpClients.RemoveAt(i);
+        streams[i].Close();
         streams.RemoveAt(i);
     }
 }
