@@ -8,12 +8,15 @@ const char* password = "ADADC4F8";
 const char* host = "192.168.1.18";
 const uint8_t port = 80;
 
+#define MOVEPIN 1
+
+// Pins guide https://tttapa.github.io/ESP8266/Chap04%20-%20Microcontroller.html
 // put your main code here, to run repeatedly:
 WiFiClient client;
 void setup() {
   // put your setup code here, to run once:
   // Connects to wifi
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println();
 
   Serial.printf("Connecting to %s ", ssid);
@@ -35,13 +38,31 @@ void setup() {
     Serial.println("connection failed!]");
     client.stop();
   }
+  pinMode(16, INPUT_PULLDOWN_16);
 }
 
 #define BUFTXSIZE 255
 char bufTx[BUFTXSIZE];
 uint8_t posTx = 0;
 bool canSendMsg = false;
+
+bool onKeyDownFlag = true;
 void loop() {
+  bool pinRead = digitalRead(16);
+  if (pinRead)
+  {
+    if (onKeyDownFlag)
+    {
+      String command = String("oldman 10\n");
+      client.print(command);
+      Serial.println(command);
+      onKeyDownFlag = false;
+    }
+  }
+  else
+  {
+    onKeyDownFlag = true;
+  }
   
   uint8_t data;
   // Reads serial
