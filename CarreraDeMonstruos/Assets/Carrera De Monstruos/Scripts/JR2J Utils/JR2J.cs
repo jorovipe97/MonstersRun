@@ -65,7 +65,6 @@ public class JR2J : MonoBehaviour {
 	void Update () {
         try
         {
-            if ()
             // If there are clients in thw connection queue
             if (tcpServer.Pending())
             {

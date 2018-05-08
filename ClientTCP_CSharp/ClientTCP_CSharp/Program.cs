@@ -11,7 +11,7 @@ namespace ClientTCP_CSharp
     {
         // UNE_HFC_5D50
         // ADADC4F8
-        public static string host = "192.168.1.21";
+        public static string host = "10.9.4.155";
         public static int port = 80;
 
         static NetworkStream stream;
