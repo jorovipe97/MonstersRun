@@ -5,8 +5,8 @@
 const char* ssid = "UNE_HFC_5D50";
 const char* password = "ADADC4F8";
 
-const char* host = "192.168.1.18";
-const uint8_t port = 80;
+const char* host = "192.168.1.26";
+const uint8_t port = 23;
 
 // put your main code here, to run repeatedly:
 WiFiClient client;
@@ -17,6 +17,7 @@ void setup() {
   Serial.println();
 
   Serial.printf("Connecting to %s ", ssid);
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED)
   {

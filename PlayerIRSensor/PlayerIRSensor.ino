@@ -2,11 +2,15 @@
 
 // UNE_HFC_5D50
 // ADADC4F8
-const char* ssid = "UPBWiFi";
-const char* password = "";
+const char* ssid = "UNE_HFC_5D50";
+const char* password = "ADADC4F8";
 
-const char* host = "10.8.88.55";
-const uint8_t port = 8888;
+const char* host = "192.168.1.18";
+const uint8_t port = 23;
+
+
+// IMPORTAN UPDATE THIS VARIABLE BASED ON THE PHYSICS CONDITIONS
+const int IR_THRESHOL = 100;
 
 #define MOVEPIN 1
 int a, b, c;
@@ -16,6 +20,7 @@ WiFiClient client;
 void setup() {
   // put your setup code here, to run once:
   // Connects to wifi
+  WiFi.mode(WIFI_STA);
   Serial.begin(9600);
   Serial.println();
 
@@ -59,7 +64,7 @@ void loop() {
   b = analogRead(A0);        // again take reading from photodiode :noise
   c=a-b;                    //taking differnce:[ (noise+signal)-(noise)] just signal
 
-  if (c > 560)
+  if (c > IR_THRESHOL)
   {
     if (flagOnEnter)
     {

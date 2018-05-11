@@ -29,7 +29,7 @@ void loop()
   Serial.print("\t");
   Serial.println(c);       // denoised signal*/
 
-  if (c > 580)
+  if (c > 100)
   {
     if (flagOnEnter)
     {

@@ -1,7 +1,8 @@
 import processing.net.*;
 
+int port = 10003;
 Server myServer;
-int PORT = 8888;
+
 
 class Player
 {
@@ -85,8 +86,8 @@ void setup()
   
   size(640,480);
   // Starts a myServer on port PORT
-  myServer = new Server(this, PORT);
-  println("Server started at: " + Server.ip() + ":" + PORT);
+  myServer = new Server(this, port);
+  println("Server started at: " + Server.ip() + ":" + port);
 }
 
 void draw()
@@ -98,9 +99,9 @@ void draw()
   // Get the next available client
   Client thisClient = myServer.available();
   // If the client is not null, and says something, display what it said
-  if (thisClient !=null) {
+  if (thisClient != null) {
     // Read string until new line (\n)
-    String whatClientSaid = thisClient.readStringUntil(10);    
+    String whatClientSaid = thisClient.readString();
     if (whatClientSaid != null) {
       // Prints the client message
       print(thisClient.ip() + "t: " + whatClientSaid);
