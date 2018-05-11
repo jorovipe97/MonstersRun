@@ -1,7 +1,7 @@
 import processing.net.*;
 
 Server myServer;
-int PORT = 80;
+int PORT = 8888;
 
 class Player
 {
@@ -84,7 +84,7 @@ void setup()
   players[2].name = "bird";  
   
   size(640,480);
-  // Starts a myServer on port 5204
+  // Starts a myServer on port PORT
   myServer = new Server(this, PORT);
   println("Server started at: " + Server.ip() + ":" + PORT);
 }
